@@ -1,0 +1,5 @@
+dotenv
+langchain[groq]
+langchain-community
+pandas
+requests
