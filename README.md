@@ -3,10 +3,6 @@
 ```bash
 financial-assistant/
 │
-├── data/                     # Raw & cleaned stock data (CSV, JSON)
-│   ├── raw/
-│   └── processed/
-│
 ├── agents/                   # Agent logic (LLM wrappers, analysis)
 │   ├── technical.py
 │   ├── fundamental.py

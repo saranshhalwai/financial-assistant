@@ -2,18 +2,11 @@ from langchain_core.tools import tool
 from pydantic import BaseModel, Field
 import pandas as pd
 import requests
-import os
-import json
 from dotenv import load_dotenv
 from langchain.chat_models import init_chat_model
 from langchain_core.messages import SystemMessage, ToolMessage
+from config.settings import ALPHA_VANTAGE_API_KEY, GROQ_API_KEY
 
-load_dotenv()
-
-ALPHA_VANTAGE_API_KEY = os.getenv("ALPHA_VANTAGE_API_KEY")
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
-if not GROQ_API_KEY or not ALPHA_VANTAGE_API_KEY:
-    raise ValueError("Missing necessary API keys in environment variables.")
 
 
 class CalculateIndicatorsInput(BaseModel):
