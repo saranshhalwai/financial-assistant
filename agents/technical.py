@@ -2,7 +2,6 @@ from langchain_core.tools import tool
 from pydantic import BaseModel, Field
 import pandas as pd
 import requests
-from dotenv import load_dotenv
 from langchain.chat_models import init_chat_model
 from langchain_core.messages import SystemMessage, ToolMessage
 from config.settings import ALPHA_VANTAGE_API_KEY, GROQ_API_KEY

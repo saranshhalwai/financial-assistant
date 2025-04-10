@@ -1,0 +1,2 @@
+class FundamentalAgent:
+	pass
