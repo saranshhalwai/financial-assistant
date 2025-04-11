@@ -1,1 +1,2 @@
-from agents.fundamental import FundamentalAgent
+from agents import TechnicalAgent
+from agents import FundamentalAgent

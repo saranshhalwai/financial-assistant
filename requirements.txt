@@ -3,3 +3,4 @@ langchain[groq]
 langchain-community
 pandas
 requests
+langgraph

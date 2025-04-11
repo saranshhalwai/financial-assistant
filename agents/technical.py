@@ -6,8 +6,6 @@ from langchain.chat_models import init_chat_model
 from langchain_core.messages import SystemMessage, ToolMessage
 from config.settings import ALPHA_VANTAGE_API_KEY, GROQ_API_KEY
 
-
-
 class CalculateIndicatorsInput(BaseModel):
     indicators: list[str] = Field(description="List of indicators to calculate. Supported: ['SMA_20', 'RSI_14']")
 
@@ -84,8 +82,6 @@ class TechnicalAgent:
         ]
 
         response = self.llm.invoke(messages)
-
-        
 
         while len(response.tool_calls) != 0:
             print("Tool calls detected:")
