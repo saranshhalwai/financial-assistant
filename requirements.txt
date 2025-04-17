@@ -4,3 +4,7 @@ langchain-community
 pandas
 requests
 langgraph
+yfinance
+scipy
+textblob
+ta

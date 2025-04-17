@@ -21,7 +21,7 @@ def sentiment_analysis(ticker: str):
     
     sentiments = []
     for article in news[:5]:  # Analyze the 5 most recent articles
-        title = article['title']
+        title = article['content']['title']
         blob = TextBlob(title)
         sentiment = blob.sentiment.polarity
         sentiments.append(sentiment)
