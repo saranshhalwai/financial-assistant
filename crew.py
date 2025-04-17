@@ -1,86 +1,67 @@
-from crewai import Agent, Task, Crew, Process
+from langchain.schema.runnable import Runnable
+from langchain.schema.runnable import RunnableMap
 from langchain_groq import ChatGroq
+from langchain.tools import Tool
+import os
+
 from tools.yf_tech_analysis_tool import yf_tech_analysis
 from tools.yf_fundamental_analysis_tool import yf_fundamental_analysis
 from tools.sentiment_analysis_tool import sentiment_analysis
 from tools.competitor_analysis_tool import competitor_analysis
 from tools.risk_assessment_tool import risk_assessment
-import os
 
-# Set your Groq API Key
-os.environ["GROQ_API_KEY"] = "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"  # Or use dotenv / config management
+os.environ["GROQ_API_KEY"] = "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"
 
-def create_crew(stock_symbol):
-    # Initialize LLaMA-3 from Groq
-    llm = ChatGroq(
-        model="llama3-8b-8192",  # Or use "llama3-70b-8192" if needed
-        temperature=0.2  # Lower temp for financial accuracy
-    )
+llm = ChatGroq(
+    model="llama3-8b-8192",
+    temperature=0.2
+)
 
-    # Define Agents
-    researcher = Agent(
-        role='Stock Market Researcher',
-        goal='Gather and analyze comprehensive data about the stock',
-        backstory="You're an experienced stock market researcher with a keen eye for detail and a talent for uncovering hidden trends.",
-        tools=[yf_tech_analysis, yf_fundamental_analysis, competitor_analysis],
-        llm=llm
-    )
+tech_tool = Tool(name="Technical Analysis", func=yf_tech_analysis, description="Performs technical analysis.")
+fundamental_tool = Tool(name="Fundamental Analysis", func=yf_fundamental_analysis, description="Performs fundamental analysis.")
+competitor_tool = Tool(name="Competitor Analysis", func=competitor_analysis, description="Analyzes competitors.")
+sentiment_tool = Tool(name="Sentiment Analysis", func=sentiment_analysis, description="Analyzes market sentiment.")
+risk_tool = Tool(name="Risk Assessment", func=risk_assessment, description="Assesses risk.")
 
-    analyst = Agent(
-        role='Financial Analyst',
-        goal='Analyze the gathered data and provide investment insights',
-        backstory="You're a seasoned financial analyst known for your accurate predictions and ability to synthesize complex information.",
-        tools=[yf_tech_analysis, yf_fundamental_analysis, risk_assessment],
-        llm=llm
-    )
+def researcher_chain(stock_symbol: str) -> dict:
+    return {
+        "technical": yf_tech_analysis(stock_symbol),
+        "fundamental": yf_fundamental_analysis(stock_symbol),
+        "competitor": competitor_analysis(stock_symbol)
+    }
 
-    sentiment_analyst = Agent(
-        role='Sentiment Analyst',
-        goal='Analyze market sentiment and its potential impact on the stock',
-        backstory="You're an expert in behavioral finance and sentiment analysis, capable of gauging market emotions and their effects on stock performance.",
-        tools=[sentiment_analysis],
-        llm=llm
-    )
+def sentiment_chain(stock_symbol: str) -> dict:
+    return {
+        "sentiment": sentiment_analysis(stock_symbol)
+    }
 
-    strategist = Agent(
-        role='Investment Strategist',
-        goal='Develop a comprehensive investment strategy based on all available data',
-        backstory="You're a renowned investment strategist known for creating tailored investment plans that balance risk and reward.",
-        tools=[],
-        llm=llm
-    )
+def analyst_chain(data: dict) -> dict:
+    stock_symbol = data["symbol"]
+    risk = risk_assessment(stock_symbol)
+    return {
+        "analysis": f"Tech: {data['technical']}\nFundamental: {data['fundamental']}\nCompetitor: {data['competitor']}\nSentiment: {data['sentiment']}\nRisk: {risk}"
+    }
 
-    # Define Tasks
-    research_task = Task(
-        description=f"Research {stock_symbol} using advanced technical and fundamental analysis tools. Provide a comprehensive summary of key metrics, including chart patterns, financial ratios, and competitor analysis.",
-        agent=researcher
-    )
+def strategist_chain(analysis: str) -> str:
+    prompt = f"Based on the following data, develop a complete investment strategy:\n\n{analysis}"
+    return llm.invoke(prompt)
 
-    sentiment_task = Task(
-        description=f"Analyze the market sentiment for {stock_symbol} using news and social media data. Evaluate how current sentiment might affect the stock's performance.",
-        agent=sentiment_analyst
-    )
+# LangChain pipeline
+def run_analysis(stock_symbol: str) -> str:
+    research = researcher_chain(stock_symbol)
+    sentiment = sentiment_chain(stock_symbol)
 
-    analysis_task = Task(
-        description=f"Synthesize the research data and sentiment analysis for {stock_symbol}. Conduct a thorough risk assessment and provide a detailed analysis of the stock's potential.",
-        agent=analyst
-    )
+    combined_data = {
+        "symbol": stock_symbol,
+        "technical": research["technical"],
+        "fundamental": research["fundamental"],
+        "competitor": research["competitor"],
+        "sentiment": sentiment["sentiment"]
+    }
 
-    strategy_task = Task(
-        description=f"Based on all the gathered information about {stock_symbol}, develop a comprehensive investment strategy. Consider various scenarios and provide actionable recommendations for different investor profiles.",
-        agent=strategist
-    )
+    analysis = analyst_chain(combined_data)
+    strategy = strategist_chain(analysis["analysis"])
 
-    # Create Crew
-    crew = Crew(
-        agents=[researcher, sentiment_analyst, analyst, strategist],
-        tasks=[research_task, sentiment_task, analysis_task, strategy_task],
-        process=Process.sequential
-    )
+    return strategy
 
-    return crew
-
-def run_analysis(stock_symbol):
-    crew = create_crew(stock_symbol)
-    result = crew.kickoff()
-    return result
+run_analysis("AAPL")

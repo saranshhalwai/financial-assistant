@@ -1,5 +1,5 @@
 import yfinance as yf
-from crewai_tools import tool
+from langchain.tools import tool
 from textblob import TextBlob
 import requests
 from bs4 import BeautifulSoup
