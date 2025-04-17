@@ -77,7 +77,7 @@ class TechnicalAgent:
             Here is the last 30 days of OHLCV data:
             {recent_data}
             Provide a trading signal (buy/sell/hold) with a reason.
-            Respond in JSON format: {{"signal": "buy|sell|hold", "reason": "your reasoning"}}
+            Respond only as the following: {{"signal": "buy|sell|hold", "reason": "your reasoning"}}
             """)
         ]
 

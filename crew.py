@@ -68,5 +68,5 @@ def run_analysis(stock_symbol: str) -> str:
     strategy = strategist_chain(analysis["analysis"])
 
     return strategy
-
-run_analysis("AAPL")
+if __name__ == "__main__":
+    print(run_analysis("AAPL"))
