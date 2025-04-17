@@ -17,6 +17,7 @@ def main():
             result = run_analysis(stock_symbol)
         
         # Parse the result
+        result = result.content  # Extract the content from the AIMessage object
         analysis = json.loads(result)
         
         # Display analysis result
