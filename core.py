@@ -9,7 +9,8 @@ from tools.yf_fundamental_analysis_tool import yf_fundamental_analysis
 from tools.sentiment_analysis_tool import sentiment_analysis
 # from tools.competitor_analysis_tool import competitor_analysis
 from tools.risk_assessment_tool import risk_assessment
-
+from dotenv import load_dotenv  
+load_dotenv()
 os.environ["GROQ_API_KEY"] = "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"
 
 llm = ChatGroq(

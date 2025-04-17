@@ -1,7 +1,7 @@
 import streamlit as st
 import yfinance as yf
 import plotly.graph_objs as go
-from crew import run_analysis
+from core import run_analysis
 import json
 
 def main():

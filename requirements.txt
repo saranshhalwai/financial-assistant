@@ -8,3 +8,5 @@ yfinance
 scipy
 textblob
 ta
+streamlit
+plotly
