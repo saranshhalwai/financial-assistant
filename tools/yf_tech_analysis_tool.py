@@ -1,7 +1,7 @@
 import yfinance as yf
 import pandas as pd
 import numpy as np
-from crewai_tools import tool
+from langchain.tools import tool
 from ta import add_all_ta_features
 from ta.utils import dropna
 from scipy.signal import find_peaks
@@ -24,8 +24,7 @@ def yf_tech_analysis(ticker: str, period: str = "1y"):
     # Add all technical analysis features
     df = add_all_ta_features(
         history, open="Open", high="High", low="Low", close="Close", volume="Volume"
-    )
-    df = dropna(df)
+    )    
     
     # Calculate additional custom indicators
     df['volatility'] = df['Close'].pct_change().rolling(window=20).std() * np.sqrt(252)
@@ -44,8 +43,8 @@ def yf_tech_analysis(ticker: str, period: str = "1y"):
     return {
         "ticker": ticker,
         "current_price": df['Close'].iloc[-1],
-        "sma_50": df['trend_sma_50'].iloc[-1],
-        "sma_200": df['trend_sma_200'].iloc[-1],
+        "sma_fast": df['trend_sma_fast'].iloc[-1],
+        "sma_slow": df['trend_sma_slow'].iloc[-1],
         "rsi": df['momentum_rsi'].iloc[-1],
         "macd": df['trend_macd_diff'].iloc[-1],
         "bollinger_hband": df['volatility_bbhi'].iloc[-1],

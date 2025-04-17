@@ -1,7 +1,8 @@
 import yfinance as yf
-from crewai_tools import tool
+import requests
+from langchain.tools import tool
 
-@tool
+# @tool
 def competitor_analysis(ticker: str, num_competitors: int = 3):
     """
     Perform competitor analysis for a given stock.
@@ -40,3 +41,5 @@ def competitor_analysis(ticker: str, num_competitors: int = 3):
         "industry": industry,
         "competitors": competitor_data
     }
+
+competitor_analysis("APPL")
