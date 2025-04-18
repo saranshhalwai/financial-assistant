@@ -40,13 +40,28 @@ def analyst_chain(data: dict) -> dict:
     stock_symbol = data["symbol"]
     risk = risk_assessment(stock_symbol)
     return {
-        "analysis": f"""Tech: {data['technical']}
-        Fundamental: {data['fundamental']}
-        Competitor: {data.get('competitor', 'N/A')}
-
-        Risk: {risk}"""
+        "analysis": f"""Technical Analysis: {data['technical']}
+        Fundamental Analysis: {data['fundamental']}
+        Sentiment Analysis: {data['sentiment']}
+        Risk Assessment: {risk}"""
     }
-# TODO:         Sentiment: {data['sentiment']}
+
+def strategist_chain(analysis: str) -> str:
+    prompt = f"""
+    You are a financial analyst assistant. Based on the following data, output a JSON with these fields:
+    
+    - technical_analysis
+    - fundamental_analysis
+    - sentiment_analysis
+    - risk_assessment
+    - investment_strategy
+    
+    Only return valid JSON. Do not include markdown, comments, or any explanations. Return JSON only.
+    
+    Analysis:
+    {analysis}
+    """
+    return llm.invoke(prompt).content  # Ensure this returns a JSON string
 
 def strategist_chain(analysis: str) -> str:
     prompt = f"Based on the following data, develop a complete investment strategy:\n\n{analysis}"
