@@ -63,10 +63,6 @@ def strategist_chain(analysis: str) -> str:
     """
     return llm.invoke(prompt).content  # Ensure this returns a JSON string
 
-def strategist_chain(analysis: str) -> str:
-    prompt = f"Based on the following data, develop a complete investment strategy:\n\n{analysis}"
-    return llm.invoke(prompt)
-
 # LangChain pipeline
 def run_analysis(stock_symbol: str) -> str:
     research = researcher_chain(stock_symbol)
