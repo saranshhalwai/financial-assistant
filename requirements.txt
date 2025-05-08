@@ -10,3 +10,6 @@ textblob
 ta
 streamlit
 plotly
+tweepy
+prophet
+matplotlib
