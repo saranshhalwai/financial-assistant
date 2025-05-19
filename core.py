@@ -6,37 +6,32 @@ from langchain_groq import ChatGroq
 
 # from tools.competitor_analysis_tool import competitor_analysis
 from tools.risk_assessment_tool import risk_assessment
-from tools.sentiment_analysis_tool import sentiment_analysis
-from tools.yf_fundamental_analysis_tool import yf_fundamental_analysis
-from tools.yf_tech_analysis_tool import yf_tech_analysis
-
+from Agents.fundamental_agent import FundamentalAgent
+from Agents.technical_agent import TechnicalAgent
+from Agents.sentiment_agent import SentimentAgent
 load_dotenv()
-os.environ["GROQ_API_KEY"] = "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"
+
 
 llm = ChatGroq(
     model="llama3-8b-8192",
     temperature=0.2
 )
 
-tech_tool = Tool(name="Technical Analysis", func=yf_tech_analysis, description="Performs technical analysis.")
-fundamental_tool = Tool(name="Fundamental Analysis", func=yf_fundamental_analysis,
-                        description="Performs fundamental analysis.")
-# competitor_tool = Tool(name="Competitor Analysis", func=competitor_analysis, description="Analyzes competitors.")
-sentiment_tool = Tool(name="Sentiment Analysis", func=sentiment_analysis, description="Analyzes market sentiment.")
+
 risk_tool = Tool(name="Risk Assessment", func=risk_assessment, description="Assesses risk.")
 
 
 def researcher_chain(stock_symbol: str) -> dict:
     return {
-        "technical": yf_tech_analysis(stock_symbol),
-        "fundamental": yf_fundamental_analysis(stock_symbol),
+        "technical": TechnicalAgent(stock_symbol).generate_signal(),
+        "fundamental": FundamentalAgent(stock_symbol).generate_signal(),
         # "competitor": competitor_analysis(stock_symbol)
     }
 
 
 def sentiment_chain(stock_symbol: str) -> dict:
     return {
-        "sentiment": sentiment_analysis(stock_symbol)
+        "sentiment": SentimentAgent(stock_symbol).generate_signal()
     }
 
 

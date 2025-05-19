@@ -102,3 +102,11 @@ def is_double_bottom(close):
         if abs(close[troughs[-1]] - close[troughs[-2]]) / close[troughs[-2]] < 0.03:
             return True
     return False
+
+# import asyncio
+#
+# if __name__ == "__main__":
+#     ticker = "AAPL"
+#     period = "1y"
+#     result = asyncio.run(yf_tech_analysis.ainvoke({"ticker": ticker, "period": period}))
+#     print(result)
