@@ -31,6 +31,6 @@ def prophet_forecast(ticker: str, period: str = "1y"):
 
 
 if __name__ == "__main__":
-    ticker = "AAPL"
+    ticker = "TSLA"
     period = "1y"
     prophet_forecast(ticker, period)
