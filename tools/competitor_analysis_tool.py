@@ -1,10 +1,7 @@
 import yfinance as yf
 from langchain.tools import tool
 from langchain_groq import ChatGroq
-
-# Groq API key (make sure you have the key)
-GROQ_API_KEY = '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'
-
+from config.settings import GROQ_API_KEY
 
 def generate_etf_ticker_from_groq(industry: str, sector: str, market_cap: int) -> str:
     """
