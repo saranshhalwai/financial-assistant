@@ -1,7 +1,7 @@
-from tools.yf_fundamental_analysis_tool import  yf_fundamental_analysis
 from langchain_groq import ChatGroq
 
-from config.settings import GROQ_API_KEY
+from tools.yf_fundamental_analysis_tool import yf_fundamental_analysis
+
 
 class FundamentalAgent:
     def __init__(self, stock_symbol: str):
@@ -35,6 +35,7 @@ class FundamentalAgent:
         """
         signal = self.llm.invoke(prompt)
         return signal.content
+
 
 if __name__ == '__main__':
     agent = FundamentalAgent("AAPL")

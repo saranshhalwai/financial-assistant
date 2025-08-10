@@ -67,7 +67,7 @@ def competitor_analysis(ticker: str, num_competitors: int = 3):
             holdings_data = etf.holdings
             if holdings_data is not None:
                 holdings = [{"symbol": symbol, "holding": percent}
-                           for symbol, percent in holdings_data.items()]
+                            for symbol, percent in holdings_data.items()]
     except Exception as e:
         print(f"Error getting holdings for {etf_ticker}: {e}")
 

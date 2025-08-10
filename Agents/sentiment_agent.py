@@ -1,7 +1,6 @@
-from tools.sentiment_analysis_tool import sentiment_analysis
 from langchain_groq import ChatGroq
 
-from config.settings import GROQ_API_KEY
+from tools.sentiment_analysis_tool import sentiment_analysis
 
 
 class SentimentAgent:

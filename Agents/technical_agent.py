@@ -1,7 +1,6 @@
-from tools.yf_tech_analysis_tool import yf_tech_analysis
 from langchain_groq import ChatGroq
 
-from config.settings import GROQ_API_KEY
+from tools.yf_tech_analysis_tool import yf_tech_analysis
 
 
 class TechnicalAgent:

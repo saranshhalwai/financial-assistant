@@ -1,22 +1,18 @@
-import os
-
 from dotenv import load_dotenv
 from langchain.tools import Tool
 from langchain_groq import ChatGroq
 
+from Agents.fundamental_agent import FundamentalAgent
+from Agents.sentiment_agent import SentimentAgent
+from Agents.technical_agent import TechnicalAgent
 # from tools.competitor_analysis_tool import competitor_analysis
 from tools.risk_assessment_tool import risk_assessment
-from Agents.fundamental_agent import FundamentalAgent
-from Agents.technical_agent import TechnicalAgent
-from Agents.sentiment_agent import SentimentAgent
 load_dotenv()
-
 
 llm = ChatGroq(
     model="llama3-8b-8192",
     temperature=0.2
 )
-
 
 risk_tool = Tool(name="Risk Assessment", func=risk_assessment, description="Assesses risk.")
 
